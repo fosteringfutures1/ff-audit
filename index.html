@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fostering Futures - Compliance Audit Tool</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        header h1 { font-size: 24px; margin-bottom: 5px; }
+        header p { opacity: 0.9; font-size: 14px; }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .info-grid input {
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            background: rgba(255,255,255,0.9);
+        }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            background: #f8fafc;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-header h2 {
+            font-size: 16px;
+            color: #1e3a5f;
+        }
+        
+        .section-header .badge {
+            background: #e2e8f0;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .section-content {
+            padding: 15px 20px;
+        }
+        
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .check-item:last-child { border-bottom: none; }
+        
+        .check-item input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            cursor: pointer;
+            accent-color: #22c55e;
+        }
+        
+        .check-item label {
+            flex: 1;
+            cursor: pointer;
+        }
+        
+        .check-item .standard {
+            font-weight: 500;
+            display: block;
+            margin-bottom: 2px;
+        }
+        
+        .check-item .detail {
+            font-size: 13px;
+            color: #64748b;
+        }
+        
+        .check-item .notes {
+            width: 100%;
+            margin-top: 8px;
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 13px;
+            display: none;
+        }
+        
+        .check-item.has-issue .notes { display: block; }
+        
+        .subsection {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .subsection h3 {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 10px;
+        }
+        
+        .staff-file {
+            background: #fefce8;
+            border: 1px solid #fef08a;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .staff-file input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .youth-file {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .progress-track {
+            flex: 1;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+        
+        .progress-text {
+            font-weight: 600;
+            min-width: 100px;
+            text-align: right;
+        }
+        
+        .findings-section {
+            background: #fef2f2;
+            border: 2px solid #fecaca;
+        }
+        
+        .findings-section .section-header {
+            background: #fef2f2;
+        }
+        
+        .finding-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .add-finding {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .critical { border-left: 4px solid #ef4444; }
+        .warning { border-left: 4px solid #f59e0b; }
+        
+        @media print {
+            .progress-bar { display: none; }
+            .section { break-inside: avoid; }
+            body { background: white; }
+        }
+        
+        .collapse-icon {
+            transition: transform 0.2s;
+        }
+        
+        .section.collapsed .collapse-icon {
+            transform: rotate(-90deg);
+        }
+        
+        .section.collapsed .section-content {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>FOSTERING FUTURES</h1>
+            <p>On-Site Compliance Audit Tool</p>
+            <p style="font-size: 12px; margin-top: 5px;">Nebraska DHHS 391 NAC Chapter 7 + Juvenile Probation Standards</p>
+            <div class="info-grid">
+                <input type="text" placeholder="Auditor Name" id="auditor">
+                <input type="date" id="audit-date">
+                <input type="text" placeholder="License #" id="license">
+                <input type="text" placeholder="Facility Location" value="Omaha, NE">
+            </div>
+        </header>
+
+        <!-- Section 1: Staffing -->
+        <div class="section" id="section-staffing">
+            <div class="section-header" onclick="toggleSection('section-staffing')">
+                <h2>1. STAFFING & PERSONNEL</h2>
+                <span class="badge" id="staffing-count">0/20</span>
+                <span class="collapse-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="subsection">
+                    <h3>Staffing Ratios</h3>
+                    <div class="check-item">
+                        <input type="checkbox" id="s1" onchange="updateProgress()">
+                        <label for="s1">
+                            <span class="standard">Day staff ratio: 1:6 minimum</span>
+                            <span class="detail">At least one direct care staff for every six children at all times</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="s2" onchange="updateProgress()">
+                        <label for="s2">
+                            <span class="standard">Night ratio: 1:6 (or 1:10 if approved)</span>
+                            <span class="detail">Alternative 1:10 ratio midnight-6am requires DHHS approval</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="s3" onchange="updateProgress()">
+                        <label for="s3">
+                            <span class="standard">CPR/First Aid certified staff on duty</span>
+                            <span class="detail">At least one staff member with current certification at all times</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="s4" onchange="updateProgress()">
+                        <label for="s4">
+                            <span class="standard">Volunteers properly supervised</span>
+                            <span class="detail">Volunteers are never left alone with youth</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Staff Qualifications</h3>
+                    <div class="check-item">
+                        <input type="checkbox" id="s5" onchange="updateProgress()">
+                        <label for="s5">
+                            <span class="standard">Executive Director qualifications</span>
+                            <span class="detail">Master's degree OR Bachelor's + 5 years experience</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="s6" onchange="updateProgress()">
+                        <label for="s6">
+                            <span class="standard">Program Director qualifications (if applicable)</span>
+                            <span class="detail">Master's degree OR Bachelor's + 3 years experience</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="staff-file">
+                    <h3>Staff File Review #1</h3>
+                    <input type="text" placeholder="Staff Name">
+                    <div class="check-item">
+                        <input type="checkbox" id="sf1-1" onchange="updateProgress()">
+                        <label for="sf1-1"><span class="standard">Pre-service training (30 hrs) complete</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="sf1-2" onchange="updateProgress()">
+                        <label for="sf1-2"><span class="standard">Annual ongoing training (20 hrs) current</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="sf1-3" onchange="updateProgress()">
+                        <label for="sf1-3"><span class="standard">CPR certification current</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="sf1-4" onchange="updateProgress()">
+                        <label for="sf1-4"><span class="standard">Crisis intervention training complete</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="sf1-5" onchange="updateProgress()">
+                        <label for="sf1-5"><span class="standard">Background checks current (within 5 yrs)</span></label>
+                    </div>
+                </div>
+
+                <div class="staff-file">
+                    <h3>Staff File Review #2</h3>
+                    <input type="text" placeholder="Staff Name">
+                    <div class="check-item">
+                        <input type="checkbox" id="sf2-1" onchange="updateProgress()">
+                        <label for="sf2-1"><span class="standard">Pre-service training (30 hrs) complete</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="sf2-2" onchange="updateProgress()">
+                        <label for="sf2-2"><span class="standard">Annual ongoing training (20 hrs) current</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="sf2-3" onchange="updateProgress()">
+                        <label for="sf2-3"><span class="standard">CPR certification current</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="sf2-4" onchange="updateProgress()">
+                        <label for="sf2-4"><span class="standard">Crisis intervention training complete</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="sf2-5" onchange="updateProgress()">
+                        <label for="sf2-5"><span class="standard">Background checks current (within 5 yrs)</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Youth Records -->
+        <div class="section" id="section-youth">
+            <div class="section-header" onclick="toggleSection('section-youth')">
+                <h2>2. YOUTH RECORDS</h2>
+                <span class="badge" id="youth-count">0/18</span>
+                <span class="collapse-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="youth-file">
+                    <h3>Youth File Review #1</h3>
+                    <input type="text" placeholder="Youth Initials/ID">
+                    <div class="check-item">
+                        <input type="checkbox" id="yf1-1" onchange="updateProgress()">
+                        <label for="yf1-1"><span class="standard">Intake info complete (name, DOB, admission)</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf1-2" onchange="updateProgress()">
+                        <label for="yf1-2"><span class="standard">Medical exam current (annual)</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf1-3" onchange="updateProgress()">
+                        <label for="yf1-3"><span class="standard">Dental exam current (annual)</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf1-4" onchange="updateProgress()">
+                        <label for="yf1-4"><span class="standard">Vision exam current (every 2 yrs)</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf1-5" onchange="updateProgress()">
+                        <label for="yf1-5"><span class="standard">Service plan on file (within 72 hrs)</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf1-6" onchange="updateProgress()">
+                        <label for="yf1-6"><span class="standard">Quarterly updates current</span></label>
+                    </div>
+                </div>
+
+                <div class="youth-file">
+                    <h3>Youth File Review #2</h3>
+                    <input type="text" placeholder="Youth Initials/ID">
+                    <div class="check-item">
+                        <input type="checkbox" id="yf2-1" onchange="updateProgress()">
+                        <label for="yf2-1"><span class="standard">Intake info complete</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf2-2" onchange="updateProgress()">
+                        <label for="yf2-2"><span class="standard">Medical exam current</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf2-3" onchange="updateProgress()">
+                        <label for="yf2-3"><span class="standard">Dental exam current</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf2-4" onchange="updateProgress()">
+                        <label for="yf2-4"><span class="standard">Vision exam current</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf2-5" onchange="updateProgress()">
+                        <label for="yf2-5"><span class="standard">Service plan on file</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf2-6" onchange="updateProgress()">
+                        <label for="yf2-6"><span class="standard">Quarterly updates current</span></label>
+                    </div>
+                </div>
+
+                <div class="youth-file">
+                    <h3>Youth File Review #3</h3>
+                    <input type="text" placeholder="Youth Initials/ID">
+                    <div class="check-item">
+                        <input type="checkbox" id="yf3-1" onchange="updateProgress()">
+                        <label for="yf3-1"><span class="standard">Intake info complete</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf3-2" onchange="updateProgress()">
+                        <label for="yf3-2"><span class="standard">Medical exam current</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf3-3" onchange="updateProgress()">
+                        <label for="yf3-3"><span class="standard">Dental exam current</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf3-4" onchange="updateProgress()">
+                        <label for="yf3-4"><span class="standard">Vision exam current</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf3-5" onchange="updateProgress()">
+                        <label for="yf3-5"><span class="standard">Service plan on file</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf3-6" onchange="updateProgress()">
+                        <label for="yf3-6"><span class="standard">Quarterly updates current</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Probation Requirements -->
+        <div class="section" id="section-probation">
+            <div class="section-header" onclick="toggleSection('section-probation')">
+                <h2>3. PROBATION-SPECIFIC REQUIREMENTS</h2>
+                <span class="badge" id="probation-count">0/7</span>
+                <span class="collapse-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="check-item critical">
+                    <input type="checkbox" id="p1" onchange="updateProgress()">
+                    <label for="p1">
+                        <span class="standard">Service plan within 72 hours of placement</span>
+                        <span class="detail">Written individualized plan based on criminogenic risk, needs, responsivity</span>
+                    </label>
+                </div>
+                <div class="check-item critical">
+                    <input type="checkbox" id="p2" onchange="updateProgress()">
+                    <label for="p2">
+                        <span class="standard">Crisis/safety plan developed and updated</span>
+                        <span class="detail">Safety risk reduction plan updated throughout stay</span>
+                    </label>
+                </div>
+                <div class="check-item critical">
+                    <input type="checkbox" id="p3" onchange="updateProgress()">
+                    <label for="p3">
+                        <span class="standard">Family engagement NOT tied to behavior levels</span>
+                        <span class="detail">Phone/visits shall not be removed as consequence per NE standards</span>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="p4" onchange="updateProgress()">
+                    <label for="p4">
+                        <span class="standard">Education - home school prioritized</span>
+                        <span class="detail">Youth attend their home school whenever possible</span>
+                    </label>
+                </div>
+                <div class="check-item critical">
+                    <input type="checkbox" id="p5" onchange="updateProgress()">
+                    <label for="p5">
+                        <span class="standard">Discharge planning begins at placement</span>
+                        <span class="detail">Proactive collaboration with probation for discharge</span>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="p6" onchange="updateProgress()">
+                    <label for="p6">
+                        <span class="standard">72-hour written notice for unplanned discharge</span>
+                        <span class="detail">Written notice to probation officer when discharge is not planned</span>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="p7" onchange="updateProgress()">
+                    <label for="p7">
+                        <span class="standard">Probation reports submitted timely</span>
+                        <span class="detail">Court documentation and reporting compliance</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Medication -->
+        <div class="section" id="section-med">
+            <div class="section-header" onclick="toggleSection('section-med')">
+                <h2>4. MEDICATION MANAGEMENT</h2>
+                <span class="badge" id="med-count">0/6</span>
+                <span class="collapse-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="check-item critical">
+                    <input type="checkbox" id="m1" onchange="updateProgress()">
+                    <label for="m1">
+                        <span class="standard">Medications locked (except emergency)</span>
+                        <span class="detail">Only authorized staff have access</span>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="m2" onchange="updateProgress()">
+                    <label for="m2">
+                        <span class="standard">Original containers with prescription labels</span>
+                        <span class="detail">All medications in proper labeled containers</span>
+                    </label>
+                </div>
+                <div class="check-item critical">
+                    <input type="checkbox" id="m3" onchange="updateProgress()">
+                    <label for="m3">
+                        <span class="standard">Med log complete (dosage, time, administrator)</span>
+                        <span class="detail">Check for blanks, signatures, PRN reasons</span>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="m4" onchange="updateProgress()">
+                    <label for="m4">
+                        <span class="standard">Med admin staff trained/certified</span>
+                        <span class="detail">Per Medication Aide Act requirements</span>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="m5" onchange="updateProgress()">
+                    <label for="m5">
+                        <span class="standard">Controlled substance count accurate</span>
+                        <span class="detail">Current count matches records</span>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="m6" onchange="updateProgress()">
+                    <label for="m6">
+                        <span class="standard">No expired medications</span>
+                        <span class="detail">All medications within expiration date</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Physical Plant -->
+        <div class="section" id="section-plant">
+            <div class="section-header" onclick="toggleSection('section-plant')">
+                <h2>5. PHYSICAL PLANT WALKTHROUGH</h2>
+                <span class="badge" id="plant-count">0/15</span>
+                <span class="collapse-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="subsection">
+                    <h3>Bedrooms</h3>
+                    <div class="check-item">
+                        <input type="checkbox" id="pp1" onchange="updateProgress()">
+                        <label for="pp1">
+                            <span class="standard">Private rooms: 100 sq ft minimum</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="pp2" onchange="updateProgress()">
+                        <label for="pp2">
+                            <span class="standard">Shared rooms: 70 sq ft per child, max 4</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="pp3" onchange="updateProgress()">
+                        <label for="pp3">
+                            <span class="standard">Beds 36 inches apart</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="pp4" onchange="updateProgress()">
+                        <label for="pp4">
+                            <span class="standard">Ceiling height 7 ft minimum</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="subsection">
+                    <h3>Bathrooms</h3>
+                    <div class="check-item">
+                        <input type="checkbox" id="pp5" onchange="updateProgress()">
+                        <label for="pp5">
+                            <span class="standard">1 toilet per 6 youth</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="pp6" onchange="updateProgress()">
+                        <label for="pp6">
+                            <span class="standard">1 sink per 6 youth</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="pp7" onchange="updateProgress()">
+                        <label for="pp7">
+                            <span class="standard">1 shower/tub per 6 youth</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="pp8" onchange="updateProgress()">
+                        <label for="pp8">
+                            <span class="standard">Bathrooms on same floor as bedrooms</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="subsection">
+                    <h3>Temperature & Safety</h3>
+                    <div class="check-item">
+                        <input type="checkbox" id="pp9" onchange="updateProgress()">
+                        <label for="pp9">
+                            <span class="standard">Building temp 65-85°F</span>
+                            <span class="detail">Reading: _____°F</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="pp10" onchange="updateProgress()">
+                        <label for="pp10">
+                            <span class="standard">Water temp 100-120°F</span>
+                            <span class="detail">Reading: _____°F</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="pp11" onchange="updateProgress()">
+                        <label for="pp11">
+                            <span class="standard">Smoke/CO detectors working</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="pp12" onchange="updateProgress()">
+                        <label for="pp12">
+                            <span class="standard">Fire extinguishers current</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="pp13" onchange="updateProgress()">
+                        <label for="pp13">
+                            <span class="standard">Exits clear and unobstructed</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="subsection">
+                    <h3>Hazardous Materials</h3>
+                    <div class="check-item">
+                        <input type="checkbox" id="pp14" onchange="updateProgress()">
+                        <label for="pp14">
+                            <span class="standard">Cleaning supplies locked</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="pp15" onchange="updateProgress()">
+                        <label for="pp15">
+                            <span class="standard">Toxic materials secured/inaccessible</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Emergency -->
+        <div class="section" id="section-emergency">
+            <div class="section-header" onclick="toggleSection('section-emergency')">
+                <h2>6. EMERGENCY PREPAREDNESS</h2>
+                <span class="badge" id="emergency-count">0/10</span>
+                <span class="collapse-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="check-item">
+                    <input type="checkbox" id="e1" onchange="updateProgress()">
+                    <label for="e1"><span class="standard">Working telephone with emergency numbers posted</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="e2" onchange="updateProgress()">
+                    <label for="e2"><span class="standard">Fire evacuation diagram in each room</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="e3" onchange="updateProgress()">
+                    <label for="e3"><span class="standard">Tornado shelter diagram in each room</span></label>
+                </div>
+                <div class="check-item critical">
+                    <input type="checkbox" id="e4" onchange="updateProgress()">
+                    <label for="e4"><span class="standard">Child Abuse Hotline posted (visible to youth)</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="e5" onchange="updateProgress()">
+                    <label for="e5"><span class="standard">First aid kit stocked and accessible</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="e6" onchange="updateProgress()">
+                    <label for="e6">
+                        <span class="standard">Fire drills monthly</span>
+                        <span class="detail">Last drill date: __________</span>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="e7" onchange="updateProgress()">
+                    <label for="e7"><span class="standard">Fire drill during sleeping hours (1x/year)</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="e8" onchange="updateProgress()">
+                    <label for="e8">
+                        <span class="standard">Tornado drills quarterly (Mar-Sep)</span>
+                        <span class="detail">Last drill date: __________</span>
+                    </label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="e9" onchange="updateProgress()">
+                    <label for="e9"><span class="standard">Tornado drill during sleeping hours (1x/year)</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="e10" onchange="updateProgress()">
+                    <label for="e10"><span class="standard">Written disaster plan on file</span></label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: Policies -->
+        <div class="section" id="section-policies">
+            <div class="section-header" onclick="toggleSection('section-policies')">
+                <h2>7. POLICIES & PROCEDURES</h2>
+                <span class="badge" id="policies-count">0/14</span>
+                <span class="collapse-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="check-item">
+                    <input type="checkbox" id="pol1" onchange="updateProgress()">
+                    <label for="pol1"><span class="standard">Behavior management/discipline policy</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="pol2" onchange="updateProgress()">
+                    <label for="pol2"><span class="standard">Physical restraint policy</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="pol3" onchange="updateProgress()">
+                    <label for="pol3"><span class="standard">Room confinement policy</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="pol4" onchange="updateProgress()">
+                    <label for="pol4"><span class="standard">Grievance procedure</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="pol5" onchange="updateProgress()">
+                    <label for="pol5"><span class="standard">Child rights/Bill of Rights</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="pol6" onchange="updateProgress()">
+                    <label for="pol6"><span class="standard">Abuse reporting policy</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="pol7" onchange="updateProgress()">
+                    <label for="pol7"><span class="standard">Transportation policy</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="pol8" onchange="updateProgress()">
+                    <label for="pol8"><span class="standard">Medication administration policy</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="pol9" onchange="updateProgress()">
+                    <label for="pol9"><span class="standard">Confidentiality policy</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="pol10" onchange="updateProgress()">
+                    <label for="pol10"><span class="standard">Emergency/disaster policy</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="pol11" onchange="updateProgress()">
+                    <label for="pol11"><span class="standard">Zero tolerance (sexual abuse) policy</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="pol12" onchange="updateProgress()">
+                    <label for="pol12"><span class="standard">Search procedures policy</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="pol13" onchange="updateProgress()">
+                    <label for="pol13"><span class="standard">STAR Bucks system documented</span></label>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" id="pol14" onchange="updateProgress()">
+                    <label for="pol14"><span class="standard">Quality assurance annual plan</span></label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Food & Transport -->
+        <div class="section" id="section-other">
+            <div class="section-header" onclick="toggleSection('section-other')">
+                <h2>8. FOOD SERVICE & TRANSPORTATION</h2>
+                <span class="badge" id="other-count">0/10</span>
+                <span class="collapse-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="subsection">
+                    <h3>Food Service</h3>
+                    <div class="check-item">
+                        <input type="checkbox" id="f1" onchange="updateProgress()">
+                        <label for="f1"><span class="standard">USDA-compliant meals</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="f2" onchange="updateProgress()">
+                        <label for="f2"><span class="standard">Menus dietician-approved</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="f3" onchange="updateProgress()">
+                        <label for="f3"><span class="standard">Allergy accommodations documented</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="f4" onchange="updateProgress()">
+                        <label for="f4"><span class="standard">Kitchen clean, food properly stored</span></label>
+                    </div>
+                </div>
+                <div class="subsection">
+                    <h3>Transportation</h3>
+                    <div class="check-item">
+                        <input type="checkbox" id="t1" onchange="updateProgress()">
+                        <label for="t1"><span class="standard">Written transport policy on file</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="t2" onchange="updateProgress()">
+                        <label for="t2"><span class="standard">Driver licenses valid and on file</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="t3" onchange="updateProgress()">
+                        <label for="t3"><span class="standard">Vehicle insurance current</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="t4" onchange="updateProgress()">
+                        <label for="t4"><span class="standard">Vehicle registration current</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="t5" onchange="updateProgress()">
+                        <label for="t5"><span class="standard">Age-appropriate car seats/restraints</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="t6" onchange="updateProgress()">
+                        <label for="t6"><span class="standard">No smoking in vehicles policy</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Findings Section -->
+        <div class="section findings-section" id="section-findings">
+            <div class="section-header">
+                <h2>FINDINGS & CORRECTIVE ACTIONS</h2>
+            </div>
+            <div class="section-content">
+                <div id="findings-list"></div>
+                <input type="text" class="finding-input" id="new-finding" placeholder="Enter finding...">
+                <input type="text" class="finding-input" id="new-action" placeholder="Corrective action needed...">
+                <button class="add-finding" onclick="addFinding()">+ Add Finding</button>
+            </div>
+        </div>
+
+        <div style="height: 80px;"></div>
+    </div>
+
+    <div class="progress-bar">
+        <span id="progress-label">Progress:</span>
+        <div class="progress-track">
+            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+        <span class="progress-text" id="progress-text">0%</span>
+    </div>
+
+    <script>
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const total = checkboxes.length;
+            const percent = Math.round((checked / total) * 100);
+            
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = checked + '/' + total + ' (' + percent + '%)';
+            
+            // Update section badges
+            updateSectionCount('staffing', ['s1','s2','s3','s4','s5','s6','sf1-1','sf1-2','sf1-3','sf1-4','sf1-5','sf2-1','sf2-2','sf2-3','sf2-4','sf2-5']);
+            updateSectionCount('youth', ['yf1-1','yf1-2','yf1-3','yf1-4','yf1-5','yf1-6','yf2-1','yf2-2','yf2-3','yf2-4','yf2-5','yf2-6','yf3-1','yf3-2','yf3-3','yf3-4','yf3-5','yf3-6']);
+            updateSectionCount('probation', ['p1','p2','p3','p4','p5','p6','p7']);
+            updateSectionCount('med', ['m1','m2','m3','m4','m5','m6']);
+            updateSectionCount('plant', ['pp1','pp2','pp3','pp4','pp5','pp6','pp7','pp8','pp9','pp10','pp11','pp12','pp13','pp14','pp15']);
+            updateSectionCount('emergency', ['e1','e2','e3','e4','e5','e6','e7','e8','e9','e10']);
+            updateSectionCount('policies', ['pol1','pol2','pol3','pol4','pol5','pol6','pol7','pol8','pol9','pol10','pol11','pol12','pol13','pol14']);
+            updateSectionCount('other', ['f1','f2','f3','f4','t1','t2','t3','t4','t5','t6']);
+            
+            // Save to localStorage
+            saveState();
+        }
+        
+        function updateSectionCount(section, ids) {
+            let checked = 0;
+            ids.forEach(id => {
+                if (document.getElementById(id) && document.getElementById(id).checked) checked++;
+            });
+            document.getElementById(section + '-count').textContent = checked + '/' + ids.length;
+        }
+        
+        function toggleSection(id) {
+            document.getElementById(id).classList.toggle('collapsed');
+        }
+        
+        function addFinding() {
+            const finding = document.getElementById('new-finding').value;
+            const action = document.getElementById('new-action').value;
+            if (finding) {
+                const div = document.createElement('div');
+                div.className = 'check-item warning';
+                div.innerHTML = '<strong>Finding:</strong> ' + finding + '<br><strong>Action:</strong> ' + action;
+                document.getElementById('findings-list').appendChild(div);
+                document.getElementById('new-finding').value = '';
+                document.getElementById('new-action').value = '';
+            }
+        }
+        
+        function saveState() {
+            const state = {};
+            document.querySelectorAll('input').forEach(input => {
+                if (input.type === 'checkbox') {
+                    state[input.id] = input.checked;
+                } else {
+                    state[input.id] = input.value;
+                }
+            });
+            localStorage.setItem('audit-state', JSON.stringify(state));
+        }
+        
+        function loadState() {
+            const state = JSON.parse(localStorage.getItem('audit-state') || '{}');
+            Object.keys(state).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (el.type === 'checkbox') {
+                        el.checked = state[id];
+                    } else {
+                        el.value = state[id];
+                    }
+                }
+            });
+            updateProgress();
+        }
+        
+        // Set today's date
+        document.getElementById('audit-date').valueAsDate = new Date();
+        
+        // Load saved state
+        loadState();
+    </script>
+</body>
+</html>
