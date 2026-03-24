@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Fostering Futures - 72-Hour ISP</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: 11px;
+            line-height: 1.4;
+            color: #1e293b;
+            padding: 20px;
+            max-width: 8.5in;
+            margin: 0 auto;
+        }
+
+        @media print {
+            body { padding: 0; font-size: 10px; }
+            .no-print { display: none !important; }
+            .page-break { page-break-before: always; }
+            input, select { border: none !important; border-bottom: 1px solid #000 !important; }
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #1e3a5f;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            color: #1e3a5f;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .header h2 {
+            color: #475569;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .header .subtitle {
+            color: #dc2626;
+            font-weight: 600;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .section {
+            margin-bottom: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: #f1f5f9;
+            padding: 6px 10px;
+            font-weight: 600;
+            font-size: 11px;
+            color: #1e3a5f;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .section-content {
+            padding: 10px;
+        }
+
+        .field-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .field {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .field label {
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .field input[type="text"],
+        .field input[type="date"] {
+            border: none;
+            border-bottom: 1px solid #94a3b8;
+            padding: 2px 5px;
+            font-size: 11px;
+            min-width: 120px;
+        }
+
+        .field input:focus {
+            outline: none;
+            border-bottom-color: #2563eb;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 5px 8px;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+        }
+
+        td input {
+            width: 100%;
+            border: none;
+            font-size: 11px;
+            padding: 2px;
+        }
+
+        .risk-boxes {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .sig-line {
+            border-bottom: 1px solid #000;
+            min-width: 150px;
+            display: inline-block;
+        }
+
+        .sig-row {
+            display: flex;
+            gap: 30px;
+            margin-top: 10px;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .print-btn:hover {
+            background: #1d4ed8;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>FOSTERING FUTURES</h1>
+        <h2>72-Hour Individualized Service Plan</h2>
+        <div class="subtitle">COMPLETE WITHIN 72 HOURS OF ADMISSION</div>
+    </div>
+
+    <!-- Basic Info -->
+    <div class="section">
+        <div class="section-header">YOUTH INFORMATION</div>
+        <div class="section-content">
+            <div class="field-row">
+                <div class="field">
+                    <label>Youth Name:</label>
+                    <input type="text" id="youth-name" style="min-width: 200px;">
+                </div>
+                <div class="field">
+                    <label>DOB:</label>
+                    <input type="date" id="dob">
+                </div>
+                <div class="field">
+                    <label>Age:</label>
+                    <input type="text" id="age" style="min-width: 40px;">
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label>Date of Admission:</label>
+                    <input type="date" id="admission-date">
+                </div>
+                <div class="field">
+                    <label>Date of Plan:</label>
+                    <input type="date" id="plan-date">
+                </div>
+                <div class="field">
+                    <label>Referring County:</label>
+                    <input type="text" id="county">
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label>Probation Officer:</label>
+                    <input type="text" id="po-name" style="min-width: 180px;">
+                </div>
+                <div class="field">
+                    <label>PO Phone:</label>
+                    <input type="text" id="po-phone">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Presenting Info -->
+    <div class="section">
+        <div class="section-header">1. PRESENTING INFORMATION</div>
+        <div class="section-content">
+            <div class="field" style="margin-bottom: 8px;">
+                <label>Reason for Placement:</label>
+                <input type="text" style="flex: 1; min-width: 400px;">
+            </div>
+            <div class="field-row">
+                <label style="font-weight: 500;">Risk Level (YLS/CMI):</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item"><input type="checkbox" id="risk-low"><label for="risk-low">Low</label></div>
+                    <div class="checkbox-item"><input type="checkbox" id="risk-mod"><label for="risk-mod">Moderate</label></div>
+                    <div class="checkbox-item"><input type="checkbox" id="risk-high"><label for="risk-high">High</label></div>
+                </div>
+            </div>
+            <div style="margin-top: 8px;">
+                <label style="font-weight: 500;">Primary Criminogenic Needs:</label>
+                <div class="checkbox-group" style="margin-top: 5px;">
+                    <div class="checkbox-item"><input type="checkbox"><label>Antisocial attitudes</label></div>
+                    <div class="checkbox-item"><input type="checkbox"><label>Antisocial peers</label></div>
+                    <div class="checkbox-item"><input type="checkbox"><label>Family circumstances</label></div>
+                    <div class="checkbox-item"><input type="checkbox"><label>Education/employment</label></div>
+                    <div class="checkbox-item"><input type="checkbox"><label>Substance abuse</label></div>
+                    <div class="checkbox-item"><input type="checkbox"><label>Leisure/recreation</label></div>
+                    <div class="checkbox-item"><input type="checkbox"><label>Personality/behavior</label></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Behavioral Goals -->
+    <div class="section">
+        <div class="section-header">2. BEHAVIORAL GOALS</div>
+        <div class="section-content">
+            <table>
+                <tr>
+                    <th style="width: 5%;">#</th>
+                    <th style="width: 50%;">Goal</th>
+                    <th>Measurement</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td><input type="text" value="Follow facility rules and staff direction"></td>
+                    <td><input type="text" value="Daily level sheet"></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><input type="text" value="Attend school without incident"></td>
+                    <td><input type="text" value="School attendance log"></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Treatment Needs -->
+    <div class="section">
+        <div class="section-header">3. TREATMENT/EVALUATION NEEDS</div>
+        <div class="section-content">
+            <table>
+                <tr>
+                    <th>Service</th>
+                    <th style="width: 30%;">Needed?</th>
+                    <th>Provider/Status</th>
+                </tr>
+                <tr>
+                    <td>Mental health assessment</td>
+                    <td>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item"><input type="checkbox"><label>Yes</label></div>
+                            <div class="checkbox-item"><input type="checkbox"><label>No</label></div>
+                            <div class="checkbox-item"><input type="checkbox"><label>Done</label></div>
+                        </div>
+                    </td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>Substance abuse assessment</td>
+                    <td>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item"><input type="checkbox"><label>Yes</label></div>
+                            <div class="checkbox-item"><input type="checkbox"><label>No</label></div>
+                            <div class="checkbox-item"><input type="checkbox"><label>Done</label></div>
+                        </div>
+                    </td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>Psychiatric evaluation</td>
+                    <td>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item"><input type="checkbox"><label>Yes</label></div>
+                            <div class="checkbox-item"><input type="checkbox"><label>No</label></div>
+                            <div class="checkbox-item"><input type="checkbox"><label>Done</label></div>
+                        </div>
+                    </td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>Individual therapy</td>
+                    <td>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item"><input type="checkbox"><label>Yes</label></div>
+                            <div class="checkbox-item"><input type="checkbox"><label>No</label></div>
+                        </div>
+                    </td>
+                    <td><input type="text"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Medication -->
+    <div class="section">
+        <div class="section-header">4. MEDICATION COMPLIANCE</div>
+        <div class="section-content">
+            <table>
+                <tr>
+                    <th>Medication</th>
+                    <th>Dose</th>
+                    <th>Frequency</th>
+                    <th>Prescriber</th>
+                </tr>
+                <tr>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                </tr>
+            </table>
+            <div class="field-row" style="margin-top: 8px;">
+                <div class="checkbox-item"><input type="checkbox"><label>Meds brought at intake</label></div>
+                <div class="field">
+                    <label>Pharmacy:</label>
+                    <input type="text">
+                </div>
+                <div class="field">
+                    <label>Next refill:</label>
+                    <input type="date">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Education -->
+    <div class="section">
+        <div class="section-header">5. EDUCATION PLAN</div>
+        <div class="section-content">
+            <div class="field-row">
+                <div class="field">
+                    <label>Home School:</label>
+                    <input type="text" style="min-width: 180px;">
+                </div>
+                <div class="field">
+                    <label>Grade:</label>
+                    <input type="text" style="min-width: 40px;">
+                </div>
+                <div class="checkbox-item"><input type="checkbox"><label>IEP</label></div>
+                <div class="checkbox-item"><input type="checkbox"><label>504</label></div>
+            </div>
+            <div style="margin-top: 8px;">
+                <label style="font-weight: 500;">School Plan:</label>
+                <div class="checkbox-group" style="margin-top: 5px;">
+                    <div class="checkbox-item"><input type="checkbox"><label>Continue at home school</label></div>
+                    <div class="checkbox-item"><input type="checkbox"><label>Enroll at Blackburn Alternative</label></div>
+                    <div class="checkbox-item"><input type="checkbox"><label>Other:</label></div>
+                    <input type="text" style="border-bottom: 1px solid #94a3b8; min-width: 150px;">
+                </div>
+            </div>
+            <div class="field" style="margin-top: 8px;">
+                <label>School start date:</label>
+                <input type="date">
+            </div>
+        </div>
+    </div>
+
+    <!-- Crisis/Safety -->
+    <div class="section">
+        <div class="section-header">6. CRISIS/SAFETY PLAN</div>
+        <div class="section-content">
+            <div class="two-col">
+                <div>
+                    <label style="font-weight: 500;">Risk Factors:</label>
+                    <div class="checkbox-group" style="margin-top: 5px; flex-direction: column; gap: 3px;">
+                        <div class="checkbox-item"><input type="checkbox"><label>Self-harm history</label></div>
+                        <div class="checkbox-item"><input type="checkbox"><label>Suicidal ideation</label></div>
+                        <div class="checkbox-item"><input type="checkbox"><label>Aggression toward others</label></div>
+                        <div class="checkbox-item"><input type="checkbox"><label>Elopement risk</label></div>
+                        <div class="checkbox-item"><input type="checkbox"><label>Substance use</label></div>
+                        <div class="checkbox-item"><input type="checkbox"><label>Gang involvement</label></div>
+                    </div>
+                </div>
+                <div>
+                    <label style="font-weight: 500;">Safety Interventions:</label>
+                    <div class="checkbox-group" style="margin-top: 5px; flex-direction: column; gap: 3px;">
+                        <div class="checkbox-item"><input type="checkbox"><label>Increased supervision</label></div>
+                        <div class="checkbox-item"><input type="checkbox"><label>Room placement consideration</label></div>
+                        <div class="checkbox-item"><input type="checkbox"><label>Peer separation from: <input type="text" style="width: 80px;"></label></div>
+                        <div class="checkbox-item"><input type="checkbox"><label>Staff alert to triggers</label></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Family -->
+    <div class="section">
+        <div class="section-header">7. FAMILY ENGAGEMENT</div>
+        <div class="section-content">
+            <div class="field-row">
+                <div class="field">
+                    <label>Primary Contact:</label>
+                    <input type="text" style="min-width: 180px;">
+                </div>
+                <div class="field">
+                    <label>Relationship:</label>
+                    <input type="text">
+                </div>
+                <div class="field">
+                    <label>Phone:</label>
+                    <input type="text">
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="checkbox-item"><input type="checkbox"><label>Initial family contact made</label></div>
+                <div class="field">
+                    <label>Date:</label>
+                    <input type="date">
+                </div>
+            </div>
+            <div class="field" style="margin-top: 5px;">
+                <label>Visitation Schedule:</label>
+                <input type="text" style="min-width: 300px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- Discharge -->
+    <div class="section">
+        <div class="section-header">8. TRANSITION/DISCHARGE PLANNING</div>
+        <div class="section-content">
+            <div>
+                <label style="font-weight: 500;">Permanency Objective:</label>
+                <div class="checkbox-group" style="margin-top: 5px;">
+                    <div class="checkbox-item"><input type="checkbox"><label>Reunification with: <input type="text" style="width: 100px;"></label></div>
+                    <div class="checkbox-item"><input type="checkbox"><label>Guardianship with: <input type="text" style="width: 100px;"></label></div>
+                    <div class="checkbox-item"><input type="checkbox"><label>Independent living</label></div>
+                </div>
+            </div>
+            <div class="field" style="margin-top: 8px;">
+                <label>Estimated Length of Stay:</label>
+                <input type="text">
+            </div>
+            <div style="margin-top: 8px;">
+                <label style="font-weight: 500;">Preliminary Discharge Criteria:</label>
+                <div style="margin-top: 5px;">
+                    1. <input type="text" style="width: 90%; border-bottom: 1px solid #94a3b8;" value="Maintain behavioral stability (Green level for ___ consecutive days)"><br>
+                    2. <input type="text" style="width: 90%; border-bottom: 1px solid #94a3b8;" value="Consistent school attendance"><br>
+                    3. <input type="text" style="width: 90%; border-bottom: 1px solid #94a3b8;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signatures -->
+    <div class="section">
+        <div class="section-header">SIGNATURES</div>
+        <div class="section-content">
+            <div class="sig-row">
+                <div class="field">
+                    <label>Staff completing plan:</label>
+                    <span class="sig-line"></span>
+                </div>
+                <div class="field">
+                    <label>Date:</label>
+                    <input type="date">
+                </div>
+            </div>
+            <div class="sig-row">
+                <div class="field">
+                    <label>Supervisor review:</label>
+                    <span class="sig-line"></span>
+                </div>
+                <div class="field">
+                    <label>Date:</label>
+                    <input type="date">
+                </div>
+            </div>
+            <div class="sig-row">
+                <div class="field">
+                    <label>Youth acknowledgment:</label>
+                    <span class="sig-line"></span>
+                </div>
+                <div class="field">
+                    <label>Date:</label>
+                    <input type="date">
+                </div>
+            </div>
+            <div class="field-row" style="margin-top: 15px;">
+                <div class="checkbox-item"><input type="checkbox"><label>Copy provided to Probation Officer</label></div>
+                <div class="field">
+                    <label>Date sent:</label>
+                    <input type="date">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p style="text-align: center; color: #64748b; font-size: 10px; margin-top: 15px;">
+        <em>This plan will be reviewed and updated at the 30-day Monthly Progress Report and as needed.</em>
+    </p>
+
+    <button class="print-btn no-print" onclick="window.print()">Print / Save PDF</button>
+
+    <script>
+        // Auto-fill today's date for plan date
+        document.getElementById('plan-date').valueAsDate = new Date();
+    </script>
+</body>
+</html>
