@@ -271,7 +271,96 @@
             align-items: center;
             margin-bottom: 10px;
         }
-        
+
+        .submit-btn {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+        }
+
+        .export-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .export-btn {
+            flex: 1;
+            background: #475569;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .export-btn:hover {
+            background: #334155;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-content h2 {
+            color: #22c55e;
+            margin-bottom: 15px;
+        }
+
+        .modal-content .score {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1e3a5f;
+            margin: 20px 0;
+        }
+
+        .modal-content .close-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
         .critical { border-left: 4px solid #ef4444; }
         .warning { border-left: 4px solid #f59e0b; }
 
@@ -915,7 +1004,32 @@
             </div>
         </div>
 
+        <!-- Submit Section -->
+        <div class="section" style="border: 2px solid #22c55e;">
+            <div class="section-content">
+                <button class="submit-btn" onclick="submitAudit()">
+                    <span>SUBMIT AUDIT</span>
+                </button>
+                <div class="export-btns">
+                    <button class="export-btn" onclick="exportJSON()">Export JSON</button>
+                    <button class="export-btn" onclick="exportCSV()">Export CSV</button>
+                    <button class="export-btn" onclick="exportPDF()">Print/PDF</button>
+                </div>
+            </div>
+        </div>
+
         <div style="height: 80px;"></div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="success-modal">
+        <div class="modal-content">
+            <h2>Audit Submitted!</h2>
+            <p>Compliance Score</p>
+            <div class="score" id="final-score">0%</div>
+            <p id="score-summary"></p>
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
     </div>
 
     <div class="progress-bar">
@@ -1203,6 +1317,191 @@
 
         // Load saved state
         loadState();
+
+        // Collect all audit data
+        function collectAuditData() {
+            const data = {
+                meta: {
+                    auditor: document.getElementById('auditor').value,
+                    date: document.getElementById('audit-date').value,
+                    license: document.getElementById('license').value,
+                    timestamp: new Date().toISOString()
+                },
+                summary: {
+                    totalItems: 0,
+                    completedItems: 0,
+                    compliancePercent: 0
+                },
+                sections: {},
+                staffFiles: [],
+                youthFiles: [],
+                findings: []
+            };
+
+            // Collect section data
+            const sections = {
+                staffing: { name: 'Staffing & Personnel', ids: ['s1','s2','s3','s4','s5','s6'] },
+                probation: { name: 'Probation Requirements', ids: ['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13','p14'] },
+                medication: { name: 'Medication Management', ids: ['m1','m2','m3','m4','m5','m6'] },
+                plant: { name: 'Physical Plant', ids: ['pp1','pp2','pp3','pp4','pp5','pp6','pp7','pp8','pp9','pp10','pp11','pp12','pp13','pp14','pp15'] },
+                emergency: { name: 'Emergency Preparedness', ids: ['e1','e2','e3','e4','e5','e6','e7','e8','e9','e10'] },
+                policies: { name: 'Policies & Procedures', ids: ['pol1','pol2','pol3','pol4','pol5','pol6','pol7','pol8','pol9','pol10','pol11','pol12','pol13','pol14'] },
+                foodTransport: { name: 'Food Service & Transportation', ids: ['f1','f2','f3','f4','t1','t2','t3','t4','t5','t6'] }
+            };
+
+            for (const [key, section] of Object.entries(sections)) {
+                let checked = 0;
+                const items = [];
+                section.ids.forEach(id => {
+                    const el = document.getElementById(id);
+                    const label = el ? el.parentElement.querySelector('.standard')?.textContent : '';
+                    const isChecked = el?.checked || false;
+                    if (isChecked) checked++;
+                    items.push({ id, label, compliant: isChecked });
+                });
+                data.sections[key] = {
+                    name: section.name,
+                    total: section.ids.length,
+                    compliant: checked,
+                    percent: Math.round((checked / section.ids.length) * 100),
+                    items
+                };
+                data.summary.totalItems += section.ids.length;
+                data.summary.completedItems += checked;
+            }
+
+            // Collect staff files
+            document.querySelectorAll('.staff-file').forEach(file => {
+                const num = file.id.replace('staff-file-', '');
+                const staffData = {
+                    name: document.getElementById(`staff-name-${num}`)?.value || '',
+                    items: []
+                };
+                for (let i = 1; i <= 5; i++) {
+                    const el = document.getElementById(`sf${num}-${i}`);
+                    const label = el?.parentElement.querySelector('.standard')?.textContent || '';
+                    staffData.items.push({ label, compliant: el?.checked || false });
+                    data.summary.totalItems++;
+                    if (el?.checked) data.summary.completedItems++;
+                }
+                data.staffFiles.push(staffData);
+            });
+
+            // Collect youth files
+            document.querySelectorAll('.youth-file').forEach(file => {
+                const num = file.id.replace('youth-file-', '');
+                const youthData = {
+                    id: document.getElementById(`youth-id-${num}`)?.value || '',
+                    items: []
+                };
+                for (let i = 1; i <= 6; i++) {
+                    const el = document.getElementById(`yf${num}-${i}`);
+                    const label = el?.parentElement.querySelector('.standard')?.textContent || '';
+                    youthData.items.push({ label, compliant: el?.checked || false });
+                    data.summary.totalItems++;
+                    if (el?.checked) data.summary.completedItems++;
+                }
+                data.youthFiles.push(youthData);
+            });
+
+            // Collect findings
+            document.querySelectorAll('#findings-list .check-item').forEach(item => {
+                const text = item.innerHTML;
+                const findingMatch = text.match(/Finding:<\/strong>\s*([^<]+)/);
+                const actionMatch = text.match(/Action:<\/strong>\s*([^<]*)/);
+                if (findingMatch) {
+                    data.findings.push({
+                        finding: findingMatch[1].trim(),
+                        action: actionMatch ? actionMatch[1].trim() : ''
+                    });
+                }
+            });
+
+            data.summary.compliancePercent = data.summary.totalItems > 0
+                ? Math.round((data.summary.completedItems / data.summary.totalItems) * 100)
+                : 0;
+
+            return data;
+        }
+
+        // Submit audit
+        function submitAudit() {
+            const data = collectAuditData();
+
+            // Save to localStorage history
+            const history = JSON.parse(localStorage.getItem('audit-history') || '[]');
+            history.push(data);
+            localStorage.setItem('audit-history', JSON.stringify(history));
+
+            // Show modal
+            document.getElementById('final-score').textContent = data.summary.compliancePercent + '%';
+            document.getElementById('score-summary').textContent =
+                `${data.summary.completedItems} of ${data.summary.totalItems} items compliant`;
+            document.getElementById('success-modal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('success-modal').classList.remove('show');
+        }
+
+        // Export as JSON
+        function exportJSON() {
+            const data = collectAuditData();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `FF_Audit_${data.meta.date || 'report'}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Export as CSV
+        function exportCSV() {
+            const data = collectAuditData();
+            let csv = 'Section,Item,Compliant\n';
+
+            // Add section items
+            for (const [key, section] of Object.entries(data.sections)) {
+                section.items.forEach(item => {
+                    csv += `"${section.name}","${item.label}",${item.compliant ? 'Yes' : 'No'}\n`;
+                });
+            }
+
+            // Add staff files
+            data.staffFiles.forEach((staff, idx) => {
+                staff.items.forEach(item => {
+                    csv += `"Staff File: ${staff.name || idx + 1}","${item.label}",${item.compliant ? 'Yes' : 'No'}\n`;
+                });
+            });
+
+            // Add youth files
+            data.youthFiles.forEach((youth, idx) => {
+                youth.items.forEach(item => {
+                    csv += `"Youth File: ${youth.id || idx + 1}","${item.label}",${item.compliant ? 'Yes' : 'No'}\n`;
+                });
+            });
+
+            // Add findings
+            csv += '\nFindings\n';
+            csv += 'Finding,Corrective Action\n';
+            data.findings.forEach(f => {
+                csv += `"${f.finding}","${f.action}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `FF_Audit_${data.meta.date || 'report'}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Export as PDF (print)
+        function exportPDF() {
+            window.print();
+        }
     </script>
 </body>
 </html>
