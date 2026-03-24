@@ -234,6 +234,43 @@
         
         .critical { border-left: 4px solid #ef4444; }
         .warning { border-left: 4px solid #f59e0b; }
+
+        .source-tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .source-dhhs {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .source-probation {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .source-both {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .probation-section {
+            border: 2px solid #f59e0b;
+        }
+
+        .probation-section .section-header {
+            background: #fef3c7;
+        }
+
+        .probation-section .section-header h2 {
+            color: #92400e;
+        }
         
         @media print {
             .progress-bar { display: none; }
@@ -271,7 +308,7 @@
         <!-- Section 1: Staffing -->
         <div class="section" id="section-staffing">
             <div class="section-header" onclick="toggleSection('section-staffing')">
-                <h2>1. STAFFING & PERSONNEL</h2>
+                <h2>1. STAFFING & PERSONNEL <span class="source-tag source-dhhs">DHHS</span></h2>
                 <span class="badge" id="staffing-count">0/20</span>
                 <span class="collapse-icon">▼</span>
             </div>
@@ -381,7 +418,7 @@
         <!-- Section 2: Youth Records -->
         <div class="section" id="section-youth">
             <div class="section-header" onclick="toggleSection('section-youth')">
-                <h2>2. YOUTH RECORDS</h2>
+                <h2>2. YOUTH RECORDS <span class="source-tag source-both">DHHS + PROBATION</span></h2>
                 <span class="badge" id="youth-count">0/18</span>
                 <span class="collapse-icon">▼</span>
             </div>
@@ -476,61 +513,129 @@
         </div>
 
         <!-- Section 3: Probation Requirements -->
-        <div class="section" id="section-probation">
+        <div class="section probation-section" id="section-probation">
             <div class="section-header" onclick="toggleSection('section-probation')">
-                <h2>3. PROBATION-SPECIFIC REQUIREMENTS</h2>
-                <span class="badge" id="probation-count">0/7</span>
+                <h2>3. PROBATION-SPECIFIC REQUIREMENTS <span class="source-tag source-probation">PROBATION</span></h2>
+                <span class="badge" id="probation-count">0/14</span>
                 <span class="collapse-icon">▼</span>
             </div>
             <div class="section-content">
-                <div class="check-item critical">
-                    <input type="checkbox" id="p1" onchange="updateProgress()">
-                    <label for="p1">
-                        <span class="standard">Service plan within 72 hours of placement</span>
-                        <span class="detail">Written individualized plan based on criminogenic risk, needs, responsivity</span>
-                    </label>
+                <p style="font-size: 12px; color: #92400e; margin-bottom: 15px; padding: 10px; background: #fffbeb; border-radius: 6px;">
+                    <strong>Source:</strong> Nebraska Administrative Office of Probation - Shelter Care Service Definition
+                </p>
+
+                <div class="subsection">
+                    <h3>Service Planning (72-Hour Requirement)</h3>
+                    <div class="check-item critical">
+                        <input type="checkbox" id="p1" onchange="updateProgress()">
+                        <label for="p1">
+                            <span class="standard">Written individualized service plan within 72 hours</span>
+                            <span class="detail">Based on criminogenic risk, needs, and responsivity</span>
+                        </label>
+                    </div>
+                    <div class="check-item critical">
+                        <input type="checkbox" id="p2" onchange="updateProgress()">
+                        <label for="p2">
+                            <span class="standard">Plan addresses: behavioral goals</span>
+                            <span class="detail">Clear behavioral objectives documented</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="p3" onchange="updateProgress()">
+                        <label for="p3">
+                            <span class="standard">Plan addresses: treatment/evaluation services</span>
+                            <span class="detail">Any needed assessments or treatment identified</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="p4" onchange="updateProgress()">
+                        <label for="p4">
+                            <span class="standard">Plan addresses: medication compliance</span>
+                            <span class="detail">Med management plan if applicable</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="p5" onchange="updateProgress()">
+                        <label for="p5">
+                            <span class="standard">Plan addresses: education</span>
+                            <span class="detail">Educational needs and school plan</span>
+                        </label>
+                    </div>
+                    <div class="check-item critical">
+                        <input type="checkbox" id="p6" onchange="updateProgress()">
+                        <label for="p6">
+                            <span class="standard">Plan addresses: transition planning</span>
+                            <span class="detail">Discharge planning begins at placement</span>
+                        </label>
+                    </div>
                 </div>
-                <div class="check-item critical">
-                    <input type="checkbox" id="p2" onchange="updateProgress()">
-                    <label for="p2">
-                        <span class="standard">Crisis/safety plan developed and updated</span>
-                        <span class="detail">Safety risk reduction plan updated throughout stay</span>
-                    </label>
+
+                <div class="subsection">
+                    <h3>Crisis & Safety Planning</h3>
+                    <div class="check-item critical">
+                        <input type="checkbox" id="p7" onchange="updateProgress()">
+                        <label for="p7">
+                            <span class="standard">Crisis/safety risk reduction plan developed</span>
+                            <span class="detail">Updated as needed throughout stay</span>
+                        </label>
+                    </div>
                 </div>
-                <div class="check-item critical">
-                    <input type="checkbox" id="p3" onchange="updateProgress()">
-                    <label for="p3">
-                        <span class="standard">Family engagement NOT tied to behavior levels</span>
-                        <span class="detail">Phone/visits shall not be removed as consequence per NE standards</span>
-                    </label>
+
+                <div class="subsection">
+                    <h3>Family Engagement (CRITICAL)</h3>
+                    <div class="check-item critical">
+                        <input type="checkbox" id="p8" onchange="updateProgress()">
+                        <label for="p8">
+                            <span class="standard">Regular phone contact with family</span>
+                            <span class="detail">Documented family phone contacts</span>
+                        </label>
+                    </div>
+                    <div class="check-item critical">
+                        <input type="checkbox" id="p9" onchange="updateProgress()">
+                        <label for="p9">
+                            <span class="standard">Family visitation occurring</span>
+                            <span class="detail">Flexible scheduling for non-traditional hours</span>
+                        </label>
+                    </div>
+                    <div class="check-item critical">
+                        <input type="checkbox" id="p10" onchange="updateProgress()">
+                        <label for="p10">
+                            <span class="standard">Family contact NOT tied to behavior levels</span>
+                            <span class="detail">Phone/visits SHALL NOT be removed as consequence</span>
+                        </label>
+                    </div>
                 </div>
-                <div class="check-item">
-                    <input type="checkbox" id="p4" onchange="updateProgress()">
-                    <label for="p4">
-                        <span class="standard">Education - home school prioritized</span>
-                        <span class="detail">Youth attend their home school whenever possible</span>
-                    </label>
-                </div>
-                <div class="check-item critical">
-                    <input type="checkbox" id="p5" onchange="updateProgress()">
-                    <label for="p5">
-                        <span class="standard">Discharge planning begins at placement</span>
-                        <span class="detail">Proactive collaboration with probation for discharge</span>
-                    </label>
-                </div>
-                <div class="check-item">
-                    <input type="checkbox" id="p6" onchange="updateProgress()">
-                    <label for="p6">
-                        <span class="standard">72-hour written notice for unplanned discharge</span>
-                        <span class="detail">Written notice to probation officer when discharge is not planned</span>
-                    </label>
-                </div>
-                <div class="check-item">
-                    <input type="checkbox" id="p7" onchange="updateProgress()">
-                    <label for="p7">
-                        <span class="standard">Probation reports submitted timely</span>
-                        <span class="detail">Court documentation and reporting compliance</span>
-                    </label>
+
+                <div class="subsection">
+                    <h3>Education & Discharge</h3>
+                    <div class="check-item">
+                        <input type="checkbox" id="p11" onchange="updateProgress()">
+                        <label for="p11">
+                            <span class="standard">Home school attendance prioritized</span>
+                            <span class="detail">Youth attend their home school whenever possible</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="p12" onchange="updateProgress()">
+                        <label for="p12">
+                            <span class="standard">72-hour notice for unplanned discharge</span>
+                            <span class="detail">Written notice to probation officer</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="p13" onchange="updateProgress()">
+                        <label for="p13">
+                            <span class="standard">Trauma-informed transition preparation</span>
+                            <span class="detail">Youth prepared for discharge transition</span>
+                        </label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="p14" onchange="updateProgress()">
+                        <label for="p14">
+                            <span class="standard">Probation reports/court docs timely</span>
+                            <span class="detail">Reporting compliance to probation</span>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -538,7 +643,7 @@
         <!-- Section 4: Medication -->
         <div class="section" id="section-med">
             <div class="section-header" onclick="toggleSection('section-med')">
-                <h2>4. MEDICATION MANAGEMENT</h2>
+                <h2>4. MEDICATION MANAGEMENT <span class="source-tag source-dhhs">DHHS</span></h2>
                 <span class="badge" id="med-count">0/6</span>
                 <span class="collapse-icon">▼</span>
             </div>
@@ -591,7 +696,7 @@
         <!-- Section 5: Physical Plant -->
         <div class="section" id="section-plant">
             <div class="section-header" onclick="toggleSection('section-plant')">
-                <h2>5. PHYSICAL PLANT WALKTHROUGH</h2>
+                <h2>5. PHYSICAL PLANT WALKTHROUGH <span class="source-tag source-dhhs">DHHS</span></h2>
                 <span class="badge" id="plant-count">0/15</span>
                 <span class="collapse-icon">▼</span>
             </div>
@@ -706,7 +811,7 @@
         <!-- Section 6: Emergency -->
         <div class="section" id="section-emergency">
             <div class="section-header" onclick="toggleSection('section-emergency')">
-                <h2>6. EMERGENCY PREPAREDNESS</h2>
+                <h2>6. EMERGENCY PREPAREDNESS <span class="source-tag source-dhhs">DHHS</span></h2>
                 <span class="badge" id="emergency-count">0/10</span>
                 <span class="collapse-icon">▼</span>
             </div>
@@ -763,7 +868,7 @@
         <!-- Section 7: Policies -->
         <div class="section" id="section-policies">
             <div class="section-header" onclick="toggleSection('section-policies')">
-                <h2>7. POLICIES & PROCEDURES</h2>
+                <h2>7. POLICIES & PROCEDURES <span class="source-tag source-dhhs">DHHS</span></h2>
                 <span class="badge" id="policies-count">0/14</span>
                 <span class="collapse-icon">▼</span>
             </div>
@@ -830,7 +935,7 @@
         <!-- Section 8: Food & Transport -->
         <div class="section" id="section-other">
             <div class="section-header" onclick="toggleSection('section-other')">
-                <h2>8. FOOD SERVICE & TRANSPORTATION</h2>
+                <h2>8. FOOD SERVICE & TRANSPORTATION <span class="source-tag source-dhhs">DHHS</span></h2>
                 <span class="badge" id="other-count">0/10</span>
                 <span class="collapse-icon">▼</span>
             </div>
@@ -921,7 +1026,7 @@
             // Update section badges
             updateSectionCount('staffing', ['s1','s2','s3','s4','s5','s6','sf1-1','sf1-2','sf1-3','sf1-4','sf1-5','sf2-1','sf2-2','sf2-3','sf2-4','sf2-5']);
             updateSectionCount('youth', ['yf1-1','yf1-2','yf1-3','yf1-4','yf1-5','yf1-6','yf2-1','yf2-2','yf2-3','yf2-4','yf2-5','yf2-6','yf3-1','yf3-2','yf3-3','yf3-4','yf3-5','yf3-6']);
-            updateSectionCount('probation', ['p1','p2','p3','p4','p5','p6','p7']);
+            updateSectionCount('probation', ['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13','p14']);
             updateSectionCount('med', ['m1','m2','m3','m4','m5','m6']);
             updateSectionCount('plant', ['pp1','pp2','pp3','pp4','pp5','pp6','pp7','pp8','pp9','pp10','pp11','pp12','pp13','pp14','pp15']);
             updateSectionCount('emergency', ['e1','e2','e3','e4','e5','e6','e7','e8','e9','e10']);
