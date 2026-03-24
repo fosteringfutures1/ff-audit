@@ -303,6 +303,28 @@
                 <input type="text" placeholder="License #" id="license">
                 <input type="text" placeholder="Facility Location" value="Omaha, NE">
             </div>
+            <div class="info-grid" style="margin-top: 10px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <label style="font-size: 12px;">Staff Files:</label>
+                    <select id="staff-count-select" onchange="updateStaffFiles()" style="padding: 8px; border-radius: 6px; border: none; font-size: 14px;">
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <label style="font-size: 12px;">Youth Files:</label>
+                    <select id="youth-count-select" onchange="updateYouthFiles()" style="padding: 8px; border-radius: 6px; border: none; font-size: 14px;">
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </div>
+            </div>
         </header>
 
         <!-- Section 1: Staffing -->
@@ -363,54 +385,8 @@
                     </div>
                 </div>
 
-                <div class="staff-file">
-                    <h3>Staff File Review #1</h3>
-                    <input type="text" placeholder="Staff Name">
-                    <div class="check-item">
-                        <input type="checkbox" id="sf1-1" onchange="updateProgress()">
-                        <label for="sf1-1"><span class="standard">Pre-service training (30 hrs) complete</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="sf1-2" onchange="updateProgress()">
-                        <label for="sf1-2"><span class="standard">Annual ongoing training (20 hrs) current</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="sf1-3" onchange="updateProgress()">
-                        <label for="sf1-3"><span class="standard">CPR certification current</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="sf1-4" onchange="updateProgress()">
-                        <label for="sf1-4"><span class="standard">Crisis intervention training complete</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="sf1-5" onchange="updateProgress()">
-                        <label for="sf1-5"><span class="standard">Background checks current (within 5 yrs)</span></label>
-                    </div>
-                </div>
-
-                <div class="staff-file">
-                    <h3>Staff File Review #2</h3>
-                    <input type="text" placeholder="Staff Name">
-                    <div class="check-item">
-                        <input type="checkbox" id="sf2-1" onchange="updateProgress()">
-                        <label for="sf2-1"><span class="standard">Pre-service training (30 hrs) complete</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="sf2-2" onchange="updateProgress()">
-                        <label for="sf2-2"><span class="standard">Annual ongoing training (20 hrs) current</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="sf2-3" onchange="updateProgress()">
-                        <label for="sf2-3"><span class="standard">CPR certification current</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="sf2-4" onchange="updateProgress()">
-                        <label for="sf2-4"><span class="standard">Crisis intervention training complete</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="sf2-5" onchange="updateProgress()">
-                        <label for="sf2-5"><span class="standard">Background checks current (within 5 yrs)</span></label>
-                    </div>
+                <div id="staff-files-container">
+                    <!-- Staff files generated dynamically -->
                 </div>
             </div>
         </div>
@@ -423,91 +399,8 @@
                 <span class="collapse-icon">▼</span>
             </div>
             <div class="section-content">
-                <div class="youth-file">
-                    <h3>Youth File Review #1</h3>
-                    <input type="text" placeholder="Youth Initials/ID">
-                    <div class="check-item">
-                        <input type="checkbox" id="yf1-1" onchange="updateProgress()">
-                        <label for="yf1-1"><span class="standard">Intake info complete (name, DOB, admission)</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="yf1-2" onchange="updateProgress()">
-                        <label for="yf1-2"><span class="standard">Medical exam current (annual)</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="yf1-3" onchange="updateProgress()">
-                        <label for="yf1-3"><span class="standard">Dental exam current (annual)</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="yf1-4" onchange="updateProgress()">
-                        <label for="yf1-4"><span class="standard">Vision exam current (every 2 yrs)</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="yf1-5" onchange="updateProgress()">
-                        <label for="yf1-5"><span class="standard">Service plan on file (within 72 hrs)</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="yf1-6" onchange="updateProgress()">
-                        <label for="yf1-6"><span class="standard">Quarterly updates current</span></label>
-                    </div>
-                </div>
-
-                <div class="youth-file">
-                    <h3>Youth File Review #2</h3>
-                    <input type="text" placeholder="Youth Initials/ID">
-                    <div class="check-item">
-                        <input type="checkbox" id="yf2-1" onchange="updateProgress()">
-                        <label for="yf2-1"><span class="standard">Intake info complete</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="yf2-2" onchange="updateProgress()">
-                        <label for="yf2-2"><span class="standard">Medical exam current</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="yf2-3" onchange="updateProgress()">
-                        <label for="yf2-3"><span class="standard">Dental exam current</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="yf2-4" onchange="updateProgress()">
-                        <label for="yf2-4"><span class="standard">Vision exam current</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="yf2-5" onchange="updateProgress()">
-                        <label for="yf2-5"><span class="standard">Service plan on file</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="yf2-6" onchange="updateProgress()">
-                        <label for="yf2-6"><span class="standard">Quarterly updates current</span></label>
-                    </div>
-                </div>
-
-                <div class="youth-file">
-                    <h3>Youth File Review #3</h3>
-                    <input type="text" placeholder="Youth Initials/ID">
-                    <div class="check-item">
-                        <input type="checkbox" id="yf3-1" onchange="updateProgress()">
-                        <label for="yf3-1"><span class="standard">Intake info complete</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="yf3-2" onchange="updateProgress()">
-                        <label for="yf3-2"><span class="standard">Medical exam current</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="yf3-3" onchange="updateProgress()">
-                        <label for="yf3-3"><span class="standard">Dental exam current</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="yf3-4" onchange="updateProgress()">
-                        <label for="yf3-4"><span class="standard">Vision exam current</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="yf3-5" onchange="updateProgress()">
-                        <label for="yf3-5"><span class="standard">Service plan on file</span></label>
-                    </div>
-                    <div class="check-item">
-                        <input type="checkbox" id="yf3-6" onchange="updateProgress()">
-                        <label for="yf3-6"><span class="standard">Quarterly updates current</span></label>
-                    </div>
+                <div id="youth-files-container">
+                    <!-- Youth files generated dynamically -->
                 </div>
             </div>
         </div>
@@ -1089,9 +982,152 @@
             updateProgress();
         }
         
+        // Generate staff file HTML
+        function generateStaffFile(num) {
+            return `
+                <div class="staff-file" id="staff-file-${num}">
+                    <h3>Staff File Review #${num}</h3>
+                    <input type="text" placeholder="Staff Name" id="staff-name-${num}">
+                    <div class="check-item">
+                        <input type="checkbox" id="sf${num}-1" onchange="updateProgress()">
+                        <label for="sf${num}-1"><span class="standard">Pre-service training (30 hrs) complete</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="sf${num}-2" onchange="updateProgress()">
+                        <label for="sf${num}-2"><span class="standard">Annual ongoing training (20 hrs) current</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="sf${num}-3" onchange="updateProgress()">
+                        <label for="sf${num}-3"><span class="standard">CPR certification current</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="sf${num}-4" onchange="updateProgress()">
+                        <label for="sf${num}-4"><span class="standard">Crisis intervention training complete</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="sf${num}-5" onchange="updateProgress()">
+                        <label for="sf${num}-5"><span class="standard">Background checks current (within 5 yrs)</span></label>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Generate youth file HTML
+        function generateYouthFile(num) {
+            return `
+                <div class="youth-file" id="youth-file-${num}">
+                    <h3>Youth File Review #${num}</h3>
+                    <input type="text" placeholder="Youth Initials/ID" id="youth-id-${num}">
+                    <div class="check-item">
+                        <input type="checkbox" id="yf${num}-1" onchange="updateProgress()">
+                        <label for="yf${num}-1"><span class="standard">Intake info complete (name, DOB, admission)</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf${num}-2" onchange="updateProgress()">
+                        <label for="yf${num}-2"><span class="standard">Medical exam current (annual)</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf${num}-3" onchange="updateProgress()">
+                        <label for="yf${num}-3"><span class="standard">Dental exam current (annual)</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf${num}-4" onchange="updateProgress()">
+                        <label for="yf${num}-4"><span class="standard">Vision exam current (every 2 yrs)</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf${num}-5" onchange="updateProgress()">
+                        <label for="yf${num}-5"><span class="standard">Service plan on file (within 72 hrs)</span></label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="yf${num}-6" onchange="updateProgress()">
+                        <label for="yf${num}-6"><span class="standard">Quarterly updates current</span></label>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update staff files based on dropdown
+        function updateStaffFiles() {
+            const count = parseInt(document.getElementById('staff-count-select').value);
+            const container = document.getElementById('staff-files-container');
+            let html = '';
+            for (let i = 1; i <= count; i++) {
+                html += generateStaffFile(i);
+            }
+            container.innerHTML = html;
+            loadState();
+            updateProgress();
+        }
+
+        // Update youth files based on dropdown
+        function updateYouthFiles() {
+            const count = parseInt(document.getElementById('youth-count-select').value);
+            const container = document.getElementById('youth-files-container');
+            let html = '';
+            for (let i = 1; i <= count; i++) {
+                html += generateYouthFile(i);
+            }
+            container.innerHTML = html;
+            loadState();
+            updateProgress();
+        }
+
+        // Dynamic section count update
+        function updateDynamicSectionCounts() {
+            // Staff section
+            const staffCount = parseInt(document.getElementById('staff-count-select').value);
+            let staffIds = ['s1','s2','s3','s4','s5','s6'];
+            for (let i = 1; i <= staffCount; i++) {
+                staffIds.push(`sf${i}-1`, `sf${i}-2`, `sf${i}-3`, `sf${i}-4`, `sf${i}-5`);
+            }
+            let staffChecked = 0;
+            staffIds.forEach(id => {
+                if (document.getElementById(id) && document.getElementById(id).checked) staffChecked++;
+            });
+            document.getElementById('staffing-count').textContent = staffChecked + '/' + staffIds.length;
+
+            // Youth section
+            const youthCount = parseInt(document.getElementById('youth-count-select').value);
+            let youthIds = [];
+            for (let i = 1; i <= youthCount; i++) {
+                youthIds.push(`yf${i}-1`, `yf${i}-2`, `yf${i}-3`, `yf${i}-4`, `yf${i}-5`, `yf${i}-6`);
+            }
+            let youthChecked = 0;
+            youthIds.forEach(id => {
+                if (document.getElementById(id) && document.getElementById(id).checked) youthChecked++;
+            });
+            document.getElementById('youth-count').textContent = youthChecked + '/' + youthIds.length;
+        }
+
+        // Override updateProgress to use dynamic counts
+        const originalUpdateProgress = updateProgress;
+        updateProgress = function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const total = checkboxes.length;
+            const percent = Math.round((checked / total) * 100);
+
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = checked + '/' + total + ' (' + percent + '%)';
+
+            updateDynamicSectionCounts();
+            updateSectionCount('probation', ['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13','p14']);
+            updateSectionCount('med', ['m1','m2','m3','m4','m5','m6']);
+            updateSectionCount('plant', ['pp1','pp2','pp3','pp4','pp5','pp6','pp7','pp8','pp9','pp10','pp11','pp12','pp13','pp14','pp15']);
+            updateSectionCount('emergency', ['e1','e2','e3','e4','e5','e6','e7','e8','e9','e10']);
+            updateSectionCount('policies', ['pol1','pol2','pol3','pol4','pol5','pol6','pol7','pol8','pol9','pol10','pol11','pol12','pol13','pol14']);
+            updateSectionCount('other', ['f1','f2','f3','f4','t1','t2','t3','t4','t5','t6']);
+
+            saveState();
+        };
+
         // Set today's date
         document.getElementById('audit-date').valueAsDate = new Date();
-        
+
+        // Initialize dynamic sections
+        updateStaffFiles();
+        updateYouthFiles();
+
         // Load saved state
         loadState();
     </script>
